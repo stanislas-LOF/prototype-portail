@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suivi de commandes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#162071;
+  --navy-dark:#0e1550;
+  --bg:#f5f6fa;
+  --white:#ffffff;
+  --border:#e3e5ef;
+  --muted:#6b7194;
+  --ok:#1e9e6a;
+  --warn:#d9930d;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Jost',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--navy-dark);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+header{
+  background:var(--navy);
+  color:var(--white);
+  padding:18px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.brand{display:flex;align-items:center;gap:14px;font-size:20px;font-weight:600;letter-spacing:.04em;}
+.brand img{height:40px;display:block;}
+.brand .fallback-mark{
+  height:40px;width:40px;border:2px solid var(--white);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;
+}
+header nav{font-size:14px;opacity:.85;}
+main{flex:1;width:100%;max-width:960px;margin:0 auto;padding:40px 24px 64px;}
+h1{color:var(--navy);font-size:30px;font-weight:600;margin-bottom:6px;}
+h2{color:var(--navy);font-size:20px;font-weight:600;}
+.subtitle{color:var(--muted);margin-bottom:28px;font-size:15px;}
+.card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:28px;
+  box-shadow:0 2px 10px rgba(14,21,80,.05);
+}
+.search-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end;}
+label{display:block;font-size:13px;font-weight:500;color:var(--navy);margin-bottom:6px;letter-spacing:.02em;}
+input[type=text],input[type=email]{
+  width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:9px;
+  font-family:inherit;font-size:15px;color:var(--navy-dark);background:var(--white);
+}
+input:focus{outline:2px solid var(--navy);outline-offset:1px;border-color:var(--navy);}
+button,.btn{
+  background:var(--navy);color:var(--white);border:none;border-radius:9px;
+  padding:12px 22px;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer;
+  text-decoration:none;display:inline-block;letter-spacing:.02em;
+}
+button:hover,.btn:hover{background:var(--navy-dark);}
+.btn.secondary{background:var(--white);color:var(--navy);border:1px solid var(--navy);}
+.btn.secondary:hover{background:var(--bg);}
+.demo-title{margin:30px 0 12px;font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.demo-list{display:grid;gap:12px;}
+.demo-item{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:var(--white);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px;cursor:pointer;transition:border-color .15s, box-shadow .15s;
+}
+.demo-item:hover{border-color:var(--navy);box-shadow:0 2px 8px rgba(22,32,113,.12);}
+.demo-item .num{font-weight:600;color:var(--navy);font-size:16px;}
+.demo-item .proj{color:var(--muted);font-size:14px;}
+.badge{
+  font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;white-space:nowrap;letter-spacing:.03em;
+}
+.badge.fabrication{background:#e8ecfd;color:var(--navy);}
+.badge.livraison{background:#fdf3e0;color:var(--warn);}
+.badge.terminee{background:#e2f5ec;color:var(--ok);}
+.error{color:#c0392b;font-size:14px;margin-top:14px;display:none;}
+.back-link{margin-bottom:20px;}
+.recap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:22px 0 30px;}
+.recap-cell{background:var(--bg);border-radius:10px;padding:14px 16px;}
+.recap-cell .k{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px;}
+.recap-cell .v{font-size:16px;font-weight:600;color:var(--navy-dark);}
+.stepper{display:flex;align-items:flex-start;margin:10px 0 36px;}
+.step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;}
+.step::before{
+  content:"";position:absolute;top:17px;left:-50%;width:100%;height:2px;background:var(--border);z-index:0;
+}
+.step:first-child::before{display:none;}
+.step.done::before,.step.current::before{background:var(--navy);}
+.dot{
+  width:36px;height:36px;border-radius:50%;background:var(--white);border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;color:var(--muted);
+  position:relative;z-index:1;
+}
+.step.done .dot{background:var(--navy);border-color:var(--navy);color:var(--white);}
+.step.current .dot{background:var(--navy);border-color:var(--navy);color:var(--white);box-shadow:0 0 0 5px rgba(22,32,113,.15);}
+.step .lbl{margin-top:8px;font-size:12.5px;color:var(--muted);max-width:110px;line-height:1.3;}
+.step.done .lbl,.step.current .lbl{color:var(--navy);font-weight:600;}
+.section{margin-bottom:32px;}
+.timeline{list-style:none;}
+.timeline li{display:flex;gap:16px;padding:10px 0;border-bottom:1px dashed var(--border);}
+.timeline li:last-child{border-bottom:none;}
+.timeline .date{font-size:13px;color:var(--muted);white-space:nowrap;width:150px;font-variant-numeric:tabular-nums;}
+.timeline .what{font-size:14.5px;}
+.docs{list-style:none;display:grid;gap:10px;}
+.docs a{
+  display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;padding:12px 16px;color:var(--navy);text-decoration:none;font-size:14.5px;font-weight:500;
+}
+.docs a:hover{border-color:var(--navy);}
+.contact{background:var(--navy);color:var(--white);border-radius:14px;padding:26px 28px;}
+.contact h2{color:var(--white);margin-bottom:8px;}
+.contact p{opacity:.9;font-size:14.5px;line-height:1.5;}
+.hidden{display:none;}
+@media (max-width:720px){
+  .search-grid{grid-template-columns:1fr;}
+  .step .lbl{font-size:10.5px;max-width:70px;}
+  header{padding:14px 20px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="logo.png" alt="Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <span class="fallback-mark" style="display:none">L</span>
+    <span>Suivi de commandes</span>
+  </div>
+  <nav>Espace client</nav>
+</header>
+
+<main>
+  <section id="view-search">
+    <h1>Suivre ma commande</h1>
+    <p class="subtitle">Renseignez votre numéro de commande et votre e-mail pour consulter l'avancement de votre projet.</p>
+    <div class="card">
+      <form id="search-form" class="search-grid" novalidate>
+        <div>
+          <label for="f-num">Numéro de commande</label>
+          <input type="text" id="f-num" placeholder="ex. CMD-2024-1042" autocomplete="off">
+        </div>
+        <div>
+          <label for="f-mail">Adresse e-mail</label>
+          <input type="email" id="f-mail" placeholder="vous@exemple.fr" autocomplete="off">
+        </div>
+        <button type="submit">Rechercher</button>
+      </form>
+      <p class="error" id="search-error">Aucun commande trouvée. Vérifiez le numéro et l'e-mail saisis.</p>
+    </div>
+    <p class="demo-title">Commandes de démonstration</p>
+    <div class="demo-list" id="demo-list"></div>
+  </section>
+
+  <section id="view-order" class="hidden">
+    <div class="back-link"><button class="btn secondary" id="back-btn">&larr; Retour à la recherche</button></div>
+    <h1 id="o-num"></h1>
+    <p class="subtitle" id="o-proj"></p>
+    <div class="card">
+      <h2>Récapitulatif</h2>
+      <div class="recap-grid" id="o-recap"></div>
+      <h2>Avancement</h2>
+      <div class="stepper" id="o-stepper"></div>
+      <div class="section">
+        <h2>Historique</h2>
+        <ul class="timeline" id="o-history"></ul>
+      </div>
+      <div class="section">
+        <h2>Documents</h2>
+        <ul class="docs" id="o-docs"></ul>
+      </div>
+    </div>
+    <div class="section" style="margin-top:28px;">
+      <div class="contact">
+        <h2>Une question sur votre commande ?</h2>
+        <p>Notre équipe vous répond du lundi au vendredi, de 9h à 18h.<br>
+        E-mail : contact@exemple.fr &nbsp;·&nbsp; Tél. : 01 23 45 67 89</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const STEPS = ["Commande reçue","Étude & devis","Validation","Fabrication","Livraison","Pose terminée"];
+
+const ORDERS = [
+  {
+    num:"CMD-2024-1042", email:"camille.durand@exemple.fr",
+    client:"Camille Durand", project:"Rénovation cuisine sur mesure",
+    amount:"8 450 €", delivery:"Livraison prévue le 12 juin 2024",
+    status:"fabrication", statusLabel:"En fabrication", currentStep:4,
+    history:[
+      ["12/05/2024","Commande reçue et confirmée."],
+      ["20/05/2024","Étude technique et devis validé par le client."],
+      ["27/05/2024","Validation du bon de commande signé."],
+      ["03/06/2024","Lancement en fabrication — atelier."],
+      ["En cours","Fabrication des modules en atelier."]
+    ],
+    docs:["Devis signé (PDF)","Bon de commande (PDF)","Plans validés (PDF)"]
+  },
+  {
+    num:"CMD-2024-1087", email:"sarl.martin@exemple.fr",
+    client:"SARL Martin & Fils", project:"Menuiserie d'agencement de bureau",
+    amount:"15 900 €", delivery:"Livraison prévue le 28 juin 2024",
+    status:"livraison", statusLabel:"En livraison", currentStep:5,
+    history:[
+      ["02/04/2024","Commande reçue et confirmée."],
+      ["10/04/2024","Étude & devis réalisé."],
+      ["18/04/2024","Devis validé par le client."],
+      ["06/05/2024","Fabrication terminée, contrôle qualité effectué."],
+      ["17/06/2024","Expédition — livraison en cours."]
+    ],
+    docs:["Devis signé (PDF)","Bon de commande (PDF)","Certificat de conformité (PDF)"]
+  },
+  {
+    num:"CMD-2024-0998", email:"pierre.leroy@exemple.fr",
+    client:"Pierre Leroy", project:"Pose de parquet — appartement 60 m²",
+    amount:"4 200 €", delivery:"Pose terminée le 30 avril 2024",
+    status:"terminee", statusLabel:"Terminée", currentStep:6,
+    history:[
+      ["05/03/2024","Commande reçue et confirmée."],
+      ["12/03/2024","Étude & devis réalisé."],
+      ["19/03/2024","Devis validé."],
+      ["01/04/2024","Préparation des matériaux."],
+      ["18/04/2024","Livraison effectuée."],
+      ["30/04/2024","Pose terminée — réception signée par le client."]
+    ],
+    docs:["Devis signé (PDF)","Facture (PDF)","Procès-verbal de réception (PDF)"]
+  }
+];
+
+const viewSearch = document.getElementById('view-search');
+const viewOrder = document.getElementById('view-order');
+const demoList = document.getElementById('demo-list');
+const searchError = document.getElementById('search-error');
+
+function renderDemos(){
+  demoList.innerHTML = '';
+  ORDERS.forEach(o=>{
+    const el = document.createElement('div');
+    el.className = 'demo-item';
+    el.innerHTML = '<div><div class="num">'+o.num+'</div><div class="proj">'+o.project+' — '+o.client+'</div></div>'
+      + '<span class="badge '+o.status+'">'+o.statusLabel+'</span>';
+    el.addEventListener('click', ()=>showOrder(o));
+    demoList.appendChild(el);
+  });
+}
+
+function showOrder(o){
+  document.getElementById('o-num').textContent = 'Commande ' + o.num;
+  document.getElementById('o-proj').textContent = o.project;
+  const recap = [
+    ['Client', o.client],
+    ['Projet', o.project],
+    ['Montant', o.amount],
+    ['Statut', o.statusLabel],
+    ['Livraison', o.delivery.replace('Livraison prévue le ','').replace('Pose terminée le ','')]
+  ];
+  document.getElementById('o-recap').innerHTML = recap.map(r=>'<div class="recap-cell"><div class="k">'+r[0]+'</div><div class="v">'+r[1]+'</div></div>').join('');
+  const stepper = document.getElementById('o-stepper');
+  stepper.innerHTML = STEPS.map((s,i)=>{
+    const n = i+1;
+    const cls = n < o.currentStep ? 'step done' : (n === o.currentStep ? 'step current' : 'step');
+    return '<div class="'+cls+'"><div class="dot">'+(n < o.currentStep ? '✓' : n)+'</div><div class="lbl">'+s+'</div></div>';
+  }).join('');
+  document.getElementById('o-history').innerHTML = o.history.map(h=>'<li><span class="date">'+h[0]+'</span><span class="what">'+h[1]+'</span></li>').join('');
+  document.getElementById('o-docs').innerHTML = o.docs.map(d=>'<li><a href="#" onclick="return false;">📄 '+d+'</a></li>').join('');
+  viewSearch.classList.add('hidden');
+  viewOrder.classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+document.getElementById('search-form').addEventListener('submit', e=>{
+  e.preventDefault();
+  const num = document.getElementById('f-num').value.trim().toLowerCase();
+  const mail = document.getElementById('f-mail').value.trim().toLowerCase();
+  const found = ORDERS.find(o=>o.num.toLowerCase()===num && o.email.toLowerCase()===mail);
+  if(found){ searchError.style.display='none'; showOrder(found); }
+  else { searchError.style.display='block'; }
+});
+
+document.getElementById('back-btn').addEventListener('click', ()=>{
+  viewOrder.classList.add('hidden');
+  viewSearch.classList.remove('hidden');
+});
+
+renderDemos();
+</script>
+</body>
+</html>
