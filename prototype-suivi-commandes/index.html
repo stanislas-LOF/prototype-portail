@@ -122,6 +122,15 @@ button:hover,.btn:hover{background:var(--navy-dark);}
 .contact h2{color:var(--white);margin-bottom:8px;}
 .contact p{opacity:.9;font-size:14.5px;line-height:1.5;}
 .hidden{display:none;}
+.bg-slideshow{position:fixed;inset:0;z-index:-2;overflow:hidden;}
+.bg-slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:diapo 36s infinite;}
+.bg-slideshow img:nth-child(2){animation-delay:6s;}
+.bg-slideshow img:nth-child(3){animation-delay:12s;}
+.bg-slideshow img:nth-child(4){animation-delay:18s;}
+.bg-slideshow img:nth-child(5){animation-delay:24s;}
+.bg-slideshow img:nth-child(6){animation-delay:30s;}
+@keyframes diapo{0%{opacity:0;}4%{opacity:1;}15%{opacity:1;}20%{opacity:0;}100%{opacity:0;}}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(245,246,250,.86),rgba(245,246,250,.78));}
 @media (max-width:720px){
   .search-grid{grid-template-columns:1fr;}
   .step .lbl{font-size:10.5px;max-width:70px;}
@@ -130,6 +139,16 @@ button:hover,.btn:hover{background:var(--navy-dark);}
 </style>
 </head>
 <body>
+
+<div class="bg-slideshow">
+  <img src="photos/photo1.jpg" alt="">
+  <img src="photos/photo2.jpg" alt="">
+  <img src="photos/photo3.jpg" alt="">
+  <img src="photos/photo4.jpg" alt="">
+  <img src="photos/photo5.png" alt="">
+  <img src="photos/photo6.png" alt="">
+</div>
+<div class="bg-overlay"></div>
 
 <header>
   <div class="brand">
@@ -180,16 +199,17 @@ button:hover,.btn:hover{background:var(--navy-dark);}
         <ul class="docs" id="o-docs"></ul>
       </div>
     </div>
-    <div class="section" style="margin-top:28px;">
-      <div class="contact">
-        <h2>Une question sur votre commande ?</h2>
-        <p><strong>Sophie</strong> — contact administratif et financier<br>
-        ✉️ Sophie@lof-paris.com &nbsp;·&nbsp; 📞 06 14 05 21 88<br><br>
-        <strong>Stanislas</strong> — toute question technique et commerciale<br>
-        ✉️ stanislas@lof-paris.com &nbsp;·&nbsp; 📞 06 68 59 22 28</p>
-      </div>
-    </div>
   </section>
+
+  <footer class="section" style="margin-top:28px;">
+    <div class="contact">
+      <h2>Une question sur votre commande ?</h2>
+      <p><strong>Sophie</strong> — contact administratif et financier<br>
+      ✉️ Sophie@lof-paris.com &nbsp;·&nbsp; 📞 06 14 05 21 88<br><br>
+      <strong>Stanislas</strong> — toute question technique et commerciale<br>
+      ✉️ stanislas@lof-paris.com &nbsp;·&nbsp; 📞 06 68 59 22 28</p>
+    </div>
+  </footer>
 </main>
 
 <script>
