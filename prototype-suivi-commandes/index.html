@@ -30,18 +30,19 @@ body{
 header{
   background:var(--navy);
   color:var(--white);
-  padding:18px 32px;
+  padding:14px 32px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
+  justify-content:center;
+  position:relative;
 }
 .brand{display:flex;align-items:center;gap:14px;font-size:20px;font-weight:600;letter-spacing:.04em;}
-.brand img{height:46px;display:block;background:#fff;border-radius:9px;padding:5px 10px;}
+.brand img{height:92px;display:block;background:#fff;border-radius:12px;padding:8px 16px;}
 .brand .fallback-mark{
   height:40px;width:40px;border:2px solid var(--white);border-radius:8px;
   display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;
 }
-header nav{font-size:14px;opacity:.85;}
+header nav{font-size:14px;opacity:.85;position:absolute;right:32px;}
 main{flex:1;width:100%;max-width:960px;margin:0 auto;padding:40px 24px 64px;}
 h1{color:var(--navy);font-size:30px;font-weight:600;margin-bottom:6px;}
 h2{color:var(--navy);font-size:20px;font-weight:600;}
@@ -130,7 +131,7 @@ button:hover,.btn:hover{background:var(--navy-dark);}
 .bg-slideshow img:nth-child(5){animation-delay:24s;}
 .bg-slideshow img:nth-child(6){animation-delay:30s;}
 @keyframes diapo{0%{opacity:0;}4%{opacity:1;}15%{opacity:1;}20%{opacity:0;}100%{opacity:0;}}
-.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(245,246,250,.86),rgba(245,246,250,.78));}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(245,246,250,.94),rgba(245,246,250,.9));}
 @media (max-width:720px){
   .search-grid{grid-template-columns:1fr;}
   .step .lbl{font-size:10.5px;max-width:70px;}
