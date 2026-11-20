@@ -36,7 +36,8 @@ header{
   justify-content:center;
   position:relative;
 }
-.brand{display:flex;align-items:center;gap:14px;font-size:20px;font-weight:600;letter-spacing:.04em;}
+.brand{display:flex;align-items:center;gap:14px;}
+.brand .lbl{position:absolute;left:32px;font-size:18px;font-weight:600;letter-spacing:.04em;color:var(--white);}
 .brand img{height:92px;display:block;background:#fff;border-radius:12px;padding:8px 16px;}
 .brand .fallback-mark{
   height:40px;width:40px;border:2px solid var(--white);border-radius:8px;
@@ -155,7 +156,7 @@ button:hover,.btn:hover{background:var(--navy-dark);}
   <div class="brand">
     <img src="logo.png" alt="Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
     <span class="fallback-mark" style="display:none">L</span>
-    <span>Suivi de commandes</span>
+    <span class="lbl">Suivi de commandes</span>
   </div>
   <nav>Espace client</nav>
 </header>
